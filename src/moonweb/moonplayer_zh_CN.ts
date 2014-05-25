@@ -87,6 +87,59 @@
     </message>
 </context>
 <context>
+    <name>MoonPlaylist</name>
+    <message>
+        <location filename="moonplaylist.cpp" line="32"/>
+        <source>Add file</source>
+        <translation type="unfinished">添加文件</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.cpp" line="33"/>
+        <source>Add url</source>
+        <translation type="unfinished">添加/解析网址</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.cpp" line="34"/>
+        <source>Add playlist</source>
+        <translation type="unfinished">添加播放列表</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.cpp" line="174"/>
+        <source>Enter url</source>
+        <translation type="unfinished">输入网址</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.cpp" line="174"/>
+        <source>Please enter url</source>
+        <translation type="unfinished">请输入网址</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.cpp" line="187"/>
+        <source>Another file is parsing. Please wait.</source>
+        <translation type="unfinished">其他任务正在进行中，请稍后。</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.cpp" line="190"/>
+        <source>Download?</source>
+        <translation type="unfinished">下载吗？</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.ui" line="34"/>
+        <source>Add</source>
+        <translation type="unfinished">添加</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.ui" line="41"/>
+        <source>Del</source>
+        <translation type="unfinished">删除</translation>
+    </message>
+    <message>
+        <location filename="moonplaylist.ui" line="61"/>
+        <source>Clear</source>
+        <translation type="unfinished">清空</translation>
+    </message>
+</context>
+<context>
     <name>Player</name>
     <message>
         <location filename="player.ui" line="14"/>
@@ -206,47 +259,40 @@
         <translation type="obsolete">清空</translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="32"/>
         <source>Add file</source>
-        <translation type="unfinished">添加文件</translation>
+        <translation type="obsolete">添加文件</translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="33"/>
         <source>Add url</source>
-        <translation type="unfinished">添加/解析网址</translation>
+        <translation type="obsolete">添加/解析网址</translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="34"/>
         <source>Add playlist</source>
-        <translation type="unfinished">添加播放列表</translation>
+        <translation type="obsolete">添加播放列表</translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="187"/>
         <source>Another file is parsing. Please wait.</source>
-        <translation type="unfinished">其他任务正在进行中，请稍后。</translation>
+        <translation type="obsolete">其他任务正在进行中，请稍后。</translation>
     </message>
     <message>
         <source>Other files is parsing.</source>
         <translation type="obsolete">其他文件正在解析中。</translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="174"/>
         <source>Enter url</source>
-        <translation type="unfinished">输入网址</translation>
+        <translation type="obsolete">输入网址</translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="174"/>
         <source>Please enter url</source>
-        <translation type="unfinished">请输入网址</translation>
+        <translation type="obsolete">请输入网址</translation>
     </message>
     <message>
         <source>Please enter a name.</source>
         <translation type="obsolete">请输入视频名称。</translation>
     </message>
     <message>
-        <location filename="playlist.cpp" line="190"/>
         <source>Download?</source>
-        <translation type="unfinished">下载吗？</translation>
+        <translation type="obsolete">下载吗？</translation>
     </message>
     <message>
         <source>Press Yes to download, or No to play online.</source>

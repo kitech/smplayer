@@ -36,6 +36,7 @@ protected:
 
 	QTranslator app_trans;
 	QTranslator qt_trans;
+	QTranslator moon_trans;
 };
 
 #endif

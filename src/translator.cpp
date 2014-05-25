@@ -25,6 +25,7 @@
 Translator::Translator() {
 	qApp->installTranslator( &app_trans );
 	qApp->installTranslator( &qt_trans );
+	qApp->installTranslator( &moon_trans );
 }
 
 Translator::~Translator() {
@@ -60,4 +61,5 @@ void Translator::load(QString locale) {
 	}
 #endif
 	loadCatalog(app_trans, "smplayer", locale, trans_path);
+    loadCatalog(moon_trans, "moonplayer", locale, trans_path);
 }

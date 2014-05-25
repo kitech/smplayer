@@ -29,10 +29,18 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="addButton"/>
+      <widget class="QPushButton" name="addButton">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="delButton"/>
+      <widget class="QPushButton" name="delButton">
+       <property name="text">
+        <string>Del</string>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer">
@@ -48,7 +56,11 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="clearButton"/>
+      <widget class="QPushButton" name="clearButton">
+       <property name="text">
+        <string>Clear</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
