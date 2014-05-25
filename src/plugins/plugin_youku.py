@@ -1,0 +1,1 @@
+../moonweb/plugins/plugin_youku.py
