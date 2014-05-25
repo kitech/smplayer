@@ -5248,7 +5248,7 @@ void BaseGui::showTubeBrowser() {
      // WebVideo *mwv = new WebVideo;
      // mwv->show();
      
-     MoonBrowser *mbw = new MoonBrowser(this);
+     MoonBrowser *mbw = new MoonBrowser(this, core);
      mbw->show();
  }
 

@@ -9,6 +9,7 @@ DOC_PATH=$(PREFIX)/share/doc/packages/smplayer
 TRANSLATION_PATH=$(PREFIX)/share/smplayer/translations
 THEMES_PATH=$(PREFIX)/share/smplayer/themes
 SHORTCUTS_PATH=$(PREFIX)/share/smplayer/shortcuts
+SHORTCUTS_PATH=$(PREFIX)/share/smplayer/plugins
 
 #KDE_PREFIX=`kde-config --prefix`
 #KDE_PREFIX=/tmp/smplayer/kde/
@@ -61,6 +62,9 @@ install: src/smplayer
 	-install -d $(DESTDIR)$(DOC_PATH)
 	tar -C docs/ --exclude=.svn -c -f - . | tar -C $(DESTDIR)$(DOC_PATH) -x -f -
 
+	-install -d $(DESTDIR)$(PLUGINS_PATH)
+	install -m 644 src/plugins/*.py $(DESTDIR)$(PLUGINS_PATH)
+  
 	-install -d $(DESTDIR)$(SHORTCUTS_PATH)
 	cp src/shortcuts/* $(DESTDIR)$(SHORTCUTS_PATH)
 

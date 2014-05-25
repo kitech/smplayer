@@ -3,6 +3,7 @@
 #include <QHash>
 #include "pyapi.h"
 #include "settings.h"
+#include <QDebug>
 
 /************************
  ** Initialize plugins **
@@ -18,6 +19,8 @@ void initPlugins()
 #else
     PyRun_SimpleString("import os");
     PyRun_SimpleString("sys.path.append('/usr/share/moonplayer/plugins')");
+    PyRun_SimpleString("sys.path.append('/usr/share/smplayer/plugins')");
+    PyRun_SimpleString("sys.path.append('./plugins')");
     PyRun_SimpleString("sys.path.append(os.environ['HOME'] + '/.moonplayer/plugins')");
 #endif
 
@@ -30,6 +33,10 @@ void initPlugins()
     QStringList list = pluginsDir.entryList(QDir::Files, QDir::Name);
 #else
     QDir pluginsDir = QDir("/usr/share/moonplayer/plugins");
+    pluginsDir = QDir("/usr/share/smplayer/plugins");
+    if (!pluginsDir.exists()) {
+        pluginsDir = QDir("./plugins");
+    }
     QStringList list = pluginsDir.entryList(QDir::Files, QDir::Name);
     pluginsDir = QDir::home();
     pluginsDir.cd(".moonplayer");
