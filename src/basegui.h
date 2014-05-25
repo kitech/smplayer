@@ -139,6 +139,7 @@ public slots:
 #ifdef YOUTUBE_SUPPORT
 	virtual void showTubeBrowser();
 #endif
+    virtual void showMoonWebBrowser();
 
 	virtual void showPlaylist();
 	virtual void showPlaylist(bool b);
@@ -495,6 +496,8 @@ protected:
 #ifdef YOUTUBE_SUPPORT
 	MyAction * showTubeBrowserAct;
 #endif
+    MyAction * showMoonWebAct;
+
 #ifdef LOG_MPLAYER
 	MyAction * showLogMplayerAct;
 #endif

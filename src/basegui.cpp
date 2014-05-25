@@ -780,6 +780,10 @@ void BaseGui::createActions() {
              this, SLOT(showTubeBrowser()) );
 #endif
 
+    showMoonWebAct = new MyAction(this, "show_moonweb_online");
+    connect(showMoonWebAct, SIGNAL(triggered()),
+            this, SLOT(showMoonWebBrowser()));
+
 	// Submenu Logs
 #ifdef LOG_MPLAYER
 	showLogMplayerAct = new MyAction( QKeySequence("Ctrl+M"), this, "show_mplayer_log" );
@@ -1661,6 +1665,8 @@ void BaseGui::retranslateStrings() {
 #ifdef YOUTUBE_SUPPORT
 	showTubeBrowserAct->change( Images::icon("tubebrowser"), tr("&YouTube%1 browser").arg(QChar(0x2122)) );
 #endif
+
+    showMoonWebAct->change(tr("Moon web online"));
 
 	// Submenu Logs
 #ifdef LOG_MPLAYER
@@ -2632,6 +2638,8 @@ void BaseGui::createMenus() {
 	optionsMenu->addAction(showTubeBrowserAct);
 	#endif
 #endif
+
+    optionsMenu->addAction(showMoonWebAct);
 
 	// OSD submenu
 	osd_menu = new QMenu(this);
@@ -5228,6 +5236,21 @@ void BaseGui::showTubeBrowser() {
 	}
 }
 #endif
+
+#include "moonbrowser.h"
+#include "webvideo.h"
+#include "moonplaylist.h"
+
+ void BaseGui::showMoonWebBrowser()
+ {
+     qDebug()<<"hehehe";
+     // moonplaylist = new MoonPlaylist;
+     // WebVideo *mwv = new WebVideo;
+     // mwv->show();
+     
+     MoonBrowser *mbw = new MoonBrowser(this);
+     mbw->show();
+ }
 
 // Language change stuff
 void BaseGui::changeEvent(QEvent *e) {

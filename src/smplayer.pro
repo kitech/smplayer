@@ -2,12 +2,14 @@ TEMPLATE = app
 LANGUAGE = C++
 
 CONFIG += qt warn_on
-CONFIG += release
-#CONFIG += debug
+#CONFIG += release
+CONFIG += debug
 
 QT += network xml
 
 RESOURCES = icons.qrc
+
+#QMAKE_CXXFLAGS += -std=c++11
 
 #DEFINES += EXPERIMENTAL
 DEFINES += SINGLE_INSTANCE
@@ -26,6 +28,7 @@ DEFINES += CHECK_UPGRADED
 DEFINES += REMINDER_ACTIONS
 #DEFINES += USE_FONTCONFIG_OPTIONS
 DEFINES += AUTO_SHUTDOWN_PC
+
 
 isEqual(QT_MAJOR_VERSION, 5) {
 	QT += widgets gui
@@ -160,7 +163,7 @@ HEADERS += guiconfig.h \
 	clhelp.h \
 	cleanconfig.h \
 	smplayer.h \
-	myapplication.h
+	myapplication.h 
 
 
 SOURCES	+= version.cpp \
@@ -257,7 +260,7 @@ SOURCES	+= version.cpp \
 	cleanconfig.cpp \
 	smplayer.cpp \
 	myapplication.cpp \
-	main.cpp
+	main.cpp 
 
 FORMS = inputdvddirectory.ui logwindowbase.ui filepropertiesdialog.ui \
         eqslider.ui seekwidget.ui inputurl.ui videoequalizer.ui vdpauproperties.ui \
@@ -266,6 +269,36 @@ FORMS = inputdvddirectory.ui logwindowbase.ui filepropertiesdialog.ui \
         prefplaylist.ui preftv.ui prefupdates.ui favoriteeditor.ui \
         about.ui inputmplayerversion.ui errordialog.ui timedialog.ui \
         toolbareditor.ui multilineinputdialog.ui
+
+# moonweb
+HEADERS +=     moonweb/webvideo.h \
+    moonweb/plugins.h \
+    moonweb/pyapi.h \
+    moonweb/downloader.h \
+    moonweb/httpget.h \
+    moonweb/settings.h \
+    moonweb/moonplaylist.h \
+    moonweb/skin.h \
+    moonweb/parser.h \
+    moonweb/moonbrowser.h
+
+SOURCES +=     moonweb/webvideo.cpp \
+    moonweb/plugins.cpp    \
+    moonweb/pyapi.cpp  \
+    moonweb/downloader.cpp \
+    moonweb/httpget.cpp  \
+    moonweb/settings.cpp \
+    moonweb/moonplaylist.cpp \
+    moonweb/skin.cpp \
+    moonweb/parser.cpp \
+    moonweb/moonbrowser.cpp
+
+FORMS += moonweb/settings.ui \
+      moonweb/moonplaylist.ui \
+      moonweb/moonbrowser.ui
+
+INCLUDEPATH += moonweb /usr/include/python2.7
+LIBS += -lpython2.7
 
 # qtsingleapplication
 contains( DEFINES, SINGLE_INSTANCE ) {

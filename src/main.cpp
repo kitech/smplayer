@@ -19,6 +19,8 @@
 #include "myapplication.h"
 #include "smplayer.h"
 
+#include "pyapi.h"
+
 int main( int argc, char ** argv ) 
 {
 	MyApplication a( "smplayer", argc, argv );
@@ -64,6 +66,8 @@ int main( int argc, char ** argv )
 			return SMPlayer::ErrorArgument;
 		}
 	}
+
+    initAPI();
 
 	SMPlayer * smplayer = new SMPlayer(config_path);
 	SMPlayer::ExitCode c = smplayer->processArgs( args );
