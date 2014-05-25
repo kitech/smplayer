@@ -6,6 +6,7 @@
 
 class BaseGui;
 class Core;
+class Playlist;
 
 class WebVideo;
 class MoonPlaylist;
@@ -18,7 +19,7 @@ class MoonBrowser : public QWidget
 {
     Q_OBJECT;
 public:
-    explicit MoonBrowser(BaseGui *bui, Core *mpcore);
+    explicit MoonBrowser(BaseGui *bui, Core *mpcore, Playlist *mplc);
     virtual ~MoonBrowser();
 
 public slots:
@@ -29,8 +30,9 @@ private:
     Ui::MoonBrowser *mui = NULL;
     BaseGui *mbui = NULL;
     WebVideo *mwv = NULL;
-    MoonPlaylist *mpl = NULL;
+    MoonPlaylist *mplm = NULL;
     Core *mpcore = NULL;
+    Playlist *mplc = NULL;
 };
 
 #endif /* _MOONBROWSER_H_ */
