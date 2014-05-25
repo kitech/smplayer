@@ -9,7 +9,7 @@ DOC_PATH=$(PREFIX)/share/doc/packages/smplayer
 TRANSLATION_PATH=$(PREFIX)/share/smplayer/translations
 THEMES_PATH=$(PREFIX)/share/smplayer/themes
 SHORTCUTS_PATH=$(PREFIX)/share/smplayer/shortcuts
-SHORTCUTS_PATH=$(PREFIX)/share/smplayer/plugins
+PLUGINS_PATH=$(PREFIX)/share/smplayer/plugins
 
 #KDE_PREFIX=`kde-config --prefix`
 #KDE_PREFIX=/tmp/smplayer/kde/
