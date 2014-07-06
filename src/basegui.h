@@ -66,7 +66,24 @@ class UpdateChecker;
 class BaseGui : public QMainWindow
 {
     Q_OBJECT
-    
+
+    // hacks
+public:
+    enum {SCREEN_DEFAULT = 0, SCREEN_FULLSCREEN, SCREEN_COMPACT} ScreenState;
+    enum {SE_INIT = 0, SE_MENU_FULLSCREEN_CHECK, SE_MENU_FULLSCREEN_UNCHECK,
+          SE_MENU_COMPACT_CHECK, SE_MENU_COMPACT_UNCHECK,
+          SE_KEY_ESCAPE, SE_KEY_FULLSCREEN,
+          SE_MEDIA_START, SE_MEDIA_STOP, SE_PLAYLIST_START, SE_PLAYLIST_STOP,
+          SE_USER_STOP, SE_MEDIA_ERROR, SE_KEY_PAUSE, 
+          SE_NOVIDEO, SE_MAXIMIZE, SE_UNMAXIMIZE
+    } StateEvent;
+public slots:
+    virtual void showMoonWebBrowser();
+    virtual void fullscreenStateMachine(int stateEvent);
+
+protected:
+    MyAction * showMoonWebAct = NULL;
+
 public:
     BaseGui( QWidget* parent = 0, Qt::WindowFlags flags = 0 );
 	~BaseGui();
@@ -139,7 +156,6 @@ public slots:
 #ifdef YOUTUBE_SUPPORT
 	virtual void showTubeBrowser();
 #endif
-    virtual void showMoonWebBrowser();
 
 	virtual void showPlaylist();
 	virtual void showPlaylist(bool b);
@@ -496,7 +512,6 @@ protected:
 #ifdef YOUTUBE_SUPPORT
 	MyAction * showTubeBrowserAct;
 #endif
-    MyAction * showMoonWebAct;
 
 #ifdef LOG_MPLAYER
 	MyAction * showLogMplayerAct;

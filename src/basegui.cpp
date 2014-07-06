@@ -5241,16 +5241,50 @@ void BaseGui::showTubeBrowser() {
 #include "webvideo.h"
 #include "moonplaylist.h"
 
- void BaseGui::showMoonWebBrowser()
- {
-     qDebug()<<"hehehe";
-     // moonplaylist = new MoonPlaylist;
-     // WebVideo *mwv = new WebVideo;
-     // mwv->show();
-     
-     MoonBrowser *mbw = new MoonBrowser(this, core, playlist);
-     mbw->show();
- }
+void BaseGui::showMoonWebBrowser()
+{
+    qDebug()<<"hehehe";
+    // moonplaylist = new MoonPlaylist;
+    // WebVideo *mwv = new WebVideo;
+    // mwv->show();
+    
+    MoonBrowser *mbw = new MoonBrowser(this, core, playlist);
+    mbw->show();
+}
+
+// 感觉全屏状态非常乱
+void BaseGui::fullscreenStateMachine(int stateEvent)
+{
+    pref->fullscreen;
+    arg_start_in_fullscreen;
+    pref->start_in_fullscreen;
+    fullscreenAct;
+    exitFullscreenAct;
+    pref->restore_pos_after_fullscreen;
+    compactAct;
+    panel;
+    menuBar();
+    statusBar();
+    pref->compact_mode;
+    isMaximized();
+
+    // event
+    // init
+    // start
+    // pause
+    // stop
+    // list stop
+    // list start
+    // user stop
+    // novideo
+    // error
+
+    switch (stateEvent) {
+    default:
+        qDebug()<<"unknown state event:"<<stateEvent;
+        break;
+    }
+}
 
 // Language change stuff
 void BaseGui::changeEvent(QEvent *e) {
