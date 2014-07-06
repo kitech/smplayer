@@ -38,7 +38,7 @@ def list_links(page, start, keyword = ''):
     return links
     
     
-url_re = re.compile(r'<a href="(http://[^"]+)"[^>]+>\s*http://')
+url_re = re.compile(r'<a href="(http://.+?)".+?onclick=.+?>\s*http://')
 name_re = re.compile(r'document.title\s*=\s*"([^"]+)"')
 def parse_flvcd_page(content, suffix):
     page = content.decode('GBK').encode('UTF-8')
@@ -54,7 +54,7 @@ def parse_flvcd_page(content, suffix):
     while match:
         url = match.group(1)
         if not suffix:
-            if url.find('/mp4/') != -1:
+            if url.find('mp4') != -1:
                 suffix = '.mp4'
             else:
                 suffix = '.flv'

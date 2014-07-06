@@ -1,4 +1,4 @@
-﻿#!/usr/bin/python
+#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
 from utils import list_links, re2
@@ -63,10 +63,11 @@ def parse(url, options):
 ## Parse videos
 def parse_cb(page, options):
     data = json.loads(page)[u'data'][0]
+    vid = data[u'vidEncoded']
     #alternative language
     try:
         langvid = data[u'dvd'][u'audiolang'][1][u'vid']
-        if langvid != data[u'vidEncoded']:
+        if langvid != vid:
             lang = data[u'dvd'][u'audiolang'][1][u'lang'].encode('UTF-8')
             if moonplayer.question('是否解析为：' + lang):
                 url = 'http://v.youku.com/player/getPlayList/VideoIDS/' + str(langvid)
@@ -80,48 +81,43 @@ def parse_cb(page, options):
     if u'error' in data:
         moonplayer.warn('Error: ' + data[u'error'].encode('UTF-8'))
         return
-    seed = data[u'seed']
+    # Set quality
     segs = data[u'segs']
     name = data[u'title'].encode('UTF-8')
     if options & moonplayer.OPT_QL_SUPER and u'hd2' in segs:
-        keys = [str(i[u'k']) for i in segs[u'hd2']]
-        fileid = data[u'streamfileids'][u'hd2']
-        fmt = 'flv'
+        fmt = 'hd2'
     elif options & (moonplayer.OPT_QL_HIGH | moonplayer.OPT_QL_SUPER) and u'mp4' in segs:
-        keys = [str(i[u'k']) for i in segs[u'mp4']]
-        fileid = data[u'streamfileids'][u'mp4']
         fmt = 'mp4'
     else:
-        keys = [str(i[u'k']) for i in segs[u'flv']]
-        fileid = data[u'streamfileids'][u'flv']
         fmt = 'flv'
-    source = r'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ/\:._-1234567890'
-    mixed = ''
-    for i in xrange(len(source)):
-        seed = (seed * 211 + 30031) % 65536
-        index = int(float(seed) / 65536 * len(source))
-        mixed += source[index]
-        source = ''.join(source.split(source[index]))
-    ids = fileid.split('*')
-    realld = ''
-    for i in ids:
-        if len(i):
-            realld += mixed[int(i)]
-        else:
-            realld += mixed[0]
+    # Get video's urls
+    url = 'http://v.youku.com/player/getM3U8/vid/%s/type/%s/ts/v.m3u8' % (vid, fmt)
+    moonplayer.get_url(url, parse_cb2, (options, name))
+    
+cb2_re = re.compile(r'(http://.+?)\.ts')
+def parse_cb2(page, data):
+    prev_url = None
+    i = 0
     result = []
-    for i in xrange(len(keys)):
-        if i < 0x10:
-            ll = '0' + hex(i)[2:].upper()
-        else:
-            ll = hex(i)[2:].upper()
-        result.append('%s_%s.%s' % (name, ll, fmt))
-        result.append('http://f.youku.com/player/getFlvPath/sid/00_00/st/%s/fileid/%s%s%s?K=%s' % (fmt, realld[0:8], ll, realld[10:-1], keys[i]))
+    options = data[0]
+    name = data[1]
+    match = cb2_re.search(page)
+    while match:
+        url = match.group(1)
+        if url != prev_url:
+            prev_url = url
+            fmt = url.split('.')[-1]
+            result.append('%s_%i.%s' % (name, i, fmt))
+            result.append(url)
+            i += 1
+        match = cb2_re.search(page, match.end(0))
     if options & moonplayer.OPT_DOWNLOAD:
-        moonplayer.download(result, '%s.%s' % (name, fmt))
+        if i == 1: # Only one video
+            moonplayer.download(result)
+        else:
+            moonplayer.download(result, '%s.%s' % (name, fmt))
     else:
         moonplayer.play(result)
-    
         
 ## Parse details
 detail_re = re.compile(r'<a href="(http://v.youku.com/.+?)".+?>(\d+)</a>')
@@ -183,3 +179,4 @@ def library(is_movie, tp, page):
 def library_cb(content, data):
     links = list_links(content, 'http://www.youku.com/show_page/id_')
     moonplayer.show_list(links)
+ 
