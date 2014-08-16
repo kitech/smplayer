@@ -16,6 +16,7 @@
   (define content "")
   (define u8content "")
   (define tdata "")
+  (define links '())
 
   (display (string-append "url:" url))
   (newline)
@@ -36,15 +37,20 @@
           ;(displayf u8content)          
           (file_put_contents "ac.html" u8content)
 
-          (list_links u8content  "1" "5" )
+          (set! links (list_links u8content  "1" "5" ))
   
+
+          (displayf links)
 
   (list 1 2 3)
   ; (list_links tdata  "1" "5" )
+  
   )
 
 ;(display (search "韩国" "1"))
-(display (search "%E9%9F%A9%E5%9B%BD" "1"))
+;(display (search "%E9%9F%A9%E5%9B%BD" "1"))
+
+(get_you_url "XNzUzMDA5MTQw")
 
 (define content "")
 
