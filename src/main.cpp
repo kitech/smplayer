@@ -20,6 +20,7 @@
 #include "smplayer.h"
 
 #include "pyapi.h"
+#include "funapi.h"
 
 int main( int argc, char ** argv ) 
 {
@@ -30,6 +31,9 @@ int main( int argc, char ** argv )
 		return 0;
 	}
 	*/
+
+    m_hehe(0);
+    return 0;
 
 	a.setQuitOnLastWindowClosed(false);
 

@@ -300,6 +300,11 @@ FORMS += moonweb/settings.ui \
 INCLUDEPATH += moonweb /usr/include/python2.7
 LIBS += -lpython2.7
 
+SOURCES += funweb/funapi.cpp
+INCLUDEPATH += funweb/
+INCLUDEPATH += /usr/include/guile/2.0
+LIBS += -lguile-2.0
+
 # qtsingleapplication
 contains( DEFINES, SINGLE_INSTANCE ) {
 	INCLUDEPATH += qtsingleapplication
