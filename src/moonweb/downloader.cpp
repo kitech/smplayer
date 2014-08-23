@@ -11,12 +11,14 @@
 #include <QHash>
 #include "httpget.h"
 #include "settings.h"
+#include <iostream>
 
 Downloader *downloader = NULL;
 
 Downloader::Downloader(QWidget *parent) :
     QWidget(parent)
 {
+    std::cout << "Initialize downloader..." << std::endl;
     n_downloading = 0;
     QStringList labels;
     labels << tr("File name") << tr("State");
@@ -57,9 +59,9 @@ void Downloader::addTask(const QString &url, const QString &filename, bool in_gr
     }
 
     HttpGet::setProxy(Settings::proxy, Settings::port);
-    HttpGet *get = new HttpGet(url, filename, this);
+    HttpGet *get = new HttpGet(url.simplified(), filename, this);
     connect(get, SIGNAL(finished(HttpGet*,bool)), this, SLOT(onFinished(HttpGet*,bool)));
-    connect(get, SIGNAL(paused(HttpGet*)), this, SLOT(onPaused(HttpGet*)));
+    connect(get, SIGNAL(paused(HttpGet*,int)), this, SLOT(onPaused(HttpGet*,int)));
     connect(get, SIGNAL(progressChanged(HttpGet*,int,bool)), this, SLOT(onProgressChanged(HttpGet*,int,bool)));
 
     //Create item
@@ -197,8 +199,10 @@ void Downloader::onProgressChanged(HttpGet *get, int progress, bool is_percentag
         item->setText(1, QString::number(progress) + 'M');
 }
 
-void Downloader::onPaused(HttpGet *get)
+void Downloader::onPaused(HttpGet *get, int reason)
 {
     QTreeWidgetItem *item = get2item[get];
-    item->setText(1, "Pause");
+    QString s;
+    s.sprintf("Pause (%d)", reason);
+    item->setText(1, s);
 }

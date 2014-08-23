@@ -10,11 +10,13 @@
 #include <QMouseEvent>
 #include <QLabel>
 #include <QDir>
+#include <iostream>
 using namespace std;
 
 MPlayer::MPlayer(QWidget *parent) :
     QWidget(parent)
 {
+    std::cout << "Initialize mplayer backend..." << std::endl;
     w = h = 1;
 
     //Create timer
@@ -34,6 +36,7 @@ MPlayer::MPlayer(QWidget *parent) :
     //Set state
     state = STOPPING;
     is_waiting = false;
+    stop_called = false;
     volume = 100;
 
     //Set color
@@ -73,6 +76,56 @@ MPlayer::MPlayer(QWidget *parent) :
     setContextMenuPolicy(Qt::CustomContextMenu);
     connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
             this, SLOT(showMenu(const QPoint&)));
+
+#ifdef Q_OS_LINUX
+    // read unfinished_time
+    QString filename = QDir::homePath() +"/.moonplayer/unfinished.txt";
+    QFile file(filename);
+    if (!file.open(QFile::ReadOnly))
+        return;
+    QByteArray data = file.readAll();
+    file.close();
+    if (data.isEmpty())
+        return;
+    QStringList list = QString::fromUtf8(data).split('\n');
+    for (int i = 0; i < list.size(); i += 2)
+        unfinished_time[list[i]] = list[i + 1].toInt();
+#endif
+}
+
+
+MPlayer::~MPlayer()
+{
+#ifdef Q_OS_LINUX
+    if (!unfinished_time.isEmpty() && Settings::rememberUnfinished)
+    {
+        QByteArray data;
+        QHash<QString, int>::const_iterator i = unfinished_time.constBegin();
+        while (i != unfinished_time.constEnd())
+        {
+            QString name = i.key();
+            if (!name.startsWith("http://"))
+                data += name.toUtf8() + '\n' + QByteArray::number(i.value()) + '\n';
+            i++;
+        }
+        data.chop(1); // Remove last '\n'
+        if (data.isEmpty())
+            return;
+        QString filename = QDir::homePath() + "/.moonplayer/unfinished.txt";
+        QFile file(filename);
+        if (!file.open(QFile::WriteOnly))
+            return;
+        file.write(data);
+        file.close();
+    }
+    else
+    {
+        QDir dir = QDir::home();
+        dir.cd(".moonplayer");
+        if (dir.exists("unfinished.txt"))
+            dir.remove("unfinished.txt");
+    }
+#endif
 }
 
 //resize layer when window size changes
@@ -120,14 +173,15 @@ void MPlayer::openFile(const QString& filename)
     //show debug message label
     msgLabel->show();
     //start MPlayer if stopping
-    wait_to_play = filename;
     if (state != STOPPING)
     {
+        wait_to_play = filename;
         is_waiting = true;
         stop();
         return;
     }
 
+    playing_file = filename;
     //Set time to 0 and cache state
     emit timeChanged(0);
     is_mplayer2 = false;
@@ -174,6 +228,14 @@ void MPlayer::openFile(const QString& filename)
     if (Settings::framedrop)
         args << "-framedrop";
 
+    // Start at the previous stopping time
+    time_offset = -1;
+    if (unfinished_time.contains(filename) && Settings::rememberUnfinished)
+    {
+        args << "-ss" << QString::number(unfinished_time[filename]);
+        time_offset = 0; // only videos with no time offset can be remembered
+    }
+
     //set proxy and open file
     if (!Settings::proxy.isEmpty() && filename.startsWith("http://")) //Set proxy
         args << proxyUrl.arg(Settings::proxy, QString::number(Settings::port),
@@ -182,7 +244,7 @@ void MPlayer::openFile(const QString& filename)
         args << filename;
     //set state
     state = TV_PLAYING; //If playing video, state will reset later in MPlayer::cb_start()
-    time_offset = -1;
+
     //start
     process->start("mplayer", args);
 }
@@ -240,6 +302,7 @@ void MPlayer::changeState()
  */
 void MPlayer::stop()
 {
+    stop_called = true;
     if (state != STOPPING)
         process->write("stop\n");
     process->waitForFinished(2000);
@@ -251,6 +314,20 @@ void MPlayer::onFinished(int)
 {
     state = STOPPING;
     timer->stop();
+
+    // Remember the unfinished time
+    if (progress < length - 1 && time_offset == 0)
+        unfinished_time[playing_file] = progress;
+    else
+        unfinished_time.remove(playing_file);
+
+    // Check whether mplayer quits abnormally
+    if (progress < length - 1 && !stop_called)
+    {
+        is_waiting = true;
+        wait_to_play = playing_file;
+    }
+    stop_called = false;
 
     if (is_waiting)
         //play after event loop

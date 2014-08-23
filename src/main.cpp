@@ -32,8 +32,8 @@ int main( int argc, char ** argv )
 	}
 	*/
 
-    m_hehe(0);
-    return 0;
+    //m_hehe(0);
+    // return 0;
 
 	a.setQuitOnLastWindowClosed(false);
 

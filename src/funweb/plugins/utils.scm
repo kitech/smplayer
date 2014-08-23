@@ -138,5 +138,4 @@
   (displayf full_output)
   (set! url_list (string-split (string-trim-both full_output) #\newline))
   (displayf (car (last-pair url_list)))
-  full_output
   )

@@ -11,14 +11,17 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QLabel>
+#include <QUrl>
 #include "plugins.h"
 #include "pyapi.h"
+#include <iostream>
 
 WebVideo *webvideo = NULL;
 
 WebVideo::WebVideo(QWidget *parent) :
     QTabWidget(parent)
 {
+    std::cout << "Initialize webview..." << std::endl;
     webvideo = this;
     setObjectName("WebVideo");
 
@@ -250,6 +253,8 @@ PyObject* WebVideo::showList(PyObject *list)
             return NULL;
         result.append(str);
     }
+    show();
+    activateWindow();
     Py_IncRef(Py_None);
     return Py_None;
 }
@@ -278,7 +283,11 @@ void WebVideo::onDoubleClicked(QListWidgetItem *item)
         return;
     }
     int i = listWidget->row(item);
-    plugins[provider]->parse(result[i].constData(), false);
+    QByteArray url = result[i];
+    Plugin *plugin = getPluginByHost(QUrl(QString::fromUtf8(url)).host());
+    if (plugin == 0)
+        plugin = plugins[provider];
+    plugin->parse(url.constData(), false);
 }
 
 

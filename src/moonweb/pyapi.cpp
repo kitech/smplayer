@@ -68,7 +68,7 @@ void GetUrl::onFinished()
 {
     //check redirection
     int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (status == 302)
+    if (status == 301 || status == 302)
     {
         reply->deleteLater();
         QByteArray final_url = reply->rawHeader("Location");
@@ -237,11 +237,9 @@ static PyObject *play(PyObject *, PyObject *args)
         if ((str = PyString_AsString(item)) == NULL)
             return NULL;
         QString url = QString::fromUtf8(str);
-        qDebug()<<name<<url;
-        if (1) {
         if (i == 0)
             moonplaylist->addFileAndPlay(name, url);
-        else
+        else {
             moonplaylist->addFile(name, url);
         }
     }
