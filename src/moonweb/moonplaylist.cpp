@@ -12,6 +12,7 @@
 #include "parser.h"
 #include "plugins.h"
 #include "pyapi.h"
+#include <iostream>
 #ifdef Q_OS_LINUX
 #include <QDBusConnection>
 #include <QDebug>
@@ -70,6 +71,16 @@ void MoonPlaylist::setSkin(const QDir &dir)
     QPalette pal;
     pal.setBrush(backgroundRole(), QBrush(img));
     setPalette(pal);
+}
+
+void MoonPlaylist::setNoSkin()
+{
+    QSize size(18, 18);
+    Skin::setButton(ui->addButton, QIcon::fromTheme("list-add"), size);
+    Skin::setButton(ui->delButton, QIcon::fromTheme("list-remove"), size);
+    Skin::setButton(ui->clearButton, QIcon::fromTheme("edit-clear"), size);
+    ui->listWidget->setStyleSheet(0);
+    setAutoFillBackground(false);
 }
 
 void MoonPlaylist::showMenu()
