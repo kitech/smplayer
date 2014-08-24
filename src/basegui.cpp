@@ -5237,9 +5237,9 @@ void BaseGui::showTubeBrowser() {
 }
 #endif
 
-#include "moonbrowser.h"
-#include "webvideo.h"
-#include "moonplaylist.h"
+// #include "moonbrowser.h"
+// #include "webvideo.h"
+// #include "moonplaylist.h"
 
 void BaseGui::showMoonWebBrowser()
 {
@@ -5248,8 +5248,8 @@ void BaseGui::showMoonWebBrowser()
     // WebVideo *mwv = new WebVideo;
     // mwv->show();
     
-    MoonBrowser *mbw = new MoonBrowser(this, core, playlist);
-    mbw->show();
+    // MoonBrowser *mbw = new MoonBrowser(this, core, playlist);
+    // mbw->show();
 }
 
 // 感觉全屏状态非常乱

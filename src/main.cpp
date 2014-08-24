@@ -19,7 +19,7 @@
 #include "myapplication.h"
 #include "smplayer.h"
 
-#include "pyapi.h"
+// #include "pyapi.h"
 #include "funapi.h"
 
 int main( int argc, char ** argv ) 
@@ -34,6 +34,10 @@ int main( int argc, char ** argv )
 
     //m_hehe(0);
     // return 0;
+
+    FunApi *api = new FunApi();
+    api->run();
+    return 0;
 
 	a.setQuitOnLastWindowClosed(false);
 
@@ -71,7 +75,7 @@ int main( int argc, char ** argv )
 		}
 	}
 
-    initAPI();
+    // initAPI();
 
 	SMPlayer * smplayer = new SMPlayer(config_path);
 	SMPlayer::ExitCode c = smplayer->processArgs( args );

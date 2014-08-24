@@ -121,6 +121,7 @@
   (define jurls "")
 
   (displayf full_url)
+  (displayf full_cmd)
 
   (let* ((port (open-input-pipe full_cmd))
          (ier 0))
@@ -138,4 +139,5 @@
   (displayf full_output)
   (set! url_list (string-split (string-trim-both full_output) #\newline))
   (displayf (car (last-pair url_list)))
+  (car (last-pair url_list))
   )

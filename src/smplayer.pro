@@ -271,36 +271,37 @@ FORMS = inputdvddirectory.ui logwindowbase.ui filepropertiesdialog.ui \
         toolbareditor.ui multilineinputdialog.ui
 
 # moonweb
-HEADERS +=     moonweb/webvideo.h \
-    moonweb/plugins.h \
-    moonweb/pyapi.h \
-    moonweb/downloader.h \
-    moonweb/httpget.h \
-    moonweb/settings.h \
-    moonweb/moonplaylist.h \
-    moonweb/skin.h \
-    moonweb/parser.h \
-    moonweb/moonbrowser.h
+# HEADERS +=     moonweb/webvideo.h \
+#     moonweb/plugins.h \
+#     moonweb/pyapi.h \
+#     moonweb/downloader.h \
+#     moonweb/httpget.h \
+#     moonweb/settings.h \
+#     moonweb/moonplaylist.h \
+#     moonweb/skin.h \
+#     moonweb/parser.h \
+#     moonweb/moonbrowser.h
 
-SOURCES +=     moonweb/webvideo.cpp \
-    moonweb/plugins.cpp    \
-    moonweb/pyapi.cpp  \
-    moonweb/downloader.cpp \
-    moonweb/httpget.cpp  \
-    moonweb/settings.cpp \
-    moonweb/moonplaylist.cpp \
-    moonweb/skin.cpp \
-    moonweb/parser.cpp \
-    moonweb/moonbrowser.cpp
+# SOURCES +=     moonweb/webvideo.cpp \
+#     moonweb/plugins.cpp    \
+#     moonweb/pyapi.cpp  \
+#     moonweb/downloader.cpp \
+#     moonweb/httpget.cpp  \
+#     moonweb/settings.cpp \
+#     moonweb/moonplaylist.cpp \
+#     moonweb/skin.cpp \
+#     moonweb/parser.cpp \
+#     moonweb/moonbrowser.cpp
 
-FORMS += moonweb/settings.ui \
-      moonweb/moonplaylist.ui \
-      moonweb/moonbrowser.ui
+# FORMS += moonweb/settings.ui \
+#       moonweb/moonplaylist.ui \
+#       moonweb/moonbrowser.ui
 
-INCLUDEPATH += moonweb /usr/include/python2.7
-LIBS += -lpython2.7
+# INCLUDEPATH += moonweb /usr/include/python2.7
+# LIBS += -lpython2.7
 
 SOURCES += funweb/funapi.cpp
+HEADERS += funweb/funapi.h
 INCLUDEPATH += funweb/
 INCLUDEPATH += /usr/include/guile/2.0
 LIBS += -lguile-2.0
