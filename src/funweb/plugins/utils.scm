@@ -9,6 +9,15 @@
   (display var) (newline)
   )
 
+(define (list2json arg)
+  (define ret "")
+  (begin
+    (set! ret (string-join arg "\", \""))
+    (set! ret (string-append "[\"" ret "\"]"))
+    )
+  ret
+  )
+
 ;; video id
 (define id_rgx "http://v.youku.com/v_show/id_(.+).html")
 (define url_m3u8_p "http://v.youku.com/player/getM3U8/vid/~a/type/~a/ts/v.m3u8")
@@ -47,8 +56,9 @@
                                         ;(set! urls (append urls (list 7)))
                        (set! urls (append urls 
                                           (list (string-append (match:substring mats_id 1)
-                                                               "###" 
-                                                               (match:substring mats1 1)))))
+                                                               "###12345" 
+                                                               ; (match:substring mats1 1)
+                                                               ))))
                        ;(displayf urls)
                        (displayf "======")
                        )
@@ -74,7 +84,7 @@
       )
 
   (list "a" "b" "c")
-  (append urls '("urls"))
+  (list2json urls)
   )
 
 ;;;;;
@@ -115,7 +125,8 @@
 (define (get_you_url vid)
   (define full_output "")
   (define full_url (format #f vm_url_tpl vid))
-  (define full_cmd (string-append "../../you-get/you-get -u " full_url))
+  ;; (define full_cmd (string-append "../../you-get/you-get -u " full_url))
+  (define full_cmd (string-append "./funweb/you-get/you-get -u " full_url))
   (define str "")
   (define url_list '())
   (define jurls "")

@@ -1,4 +1,5 @@
 #include <libguile.h>
+#include <QJsonDocument>
 
 #include "funapi.h"
 
@@ -74,13 +75,21 @@ static void *guile_runner(void *data)
 
     char *c_ret = NULL;
 
+    SCM f_search = SCM2C("search");
     SCM f_youget = SCM2C("get_you_url");
     SCM f_list_link = SCM2C("list_links");
     SCM f_ret;
     SCM f_args;
 
-    f_args = scm_from_locale_string(api->m_args.toLatin1().data());
-    f_ret = scm_call_1(f_youget, f_args);
+    if (api->m_cmd == "youget") {
+        f_args = scm_from_locale_string(api->m_args.toLatin1().data());
+        f_ret = scm_call_1(f_youget, f_args);
+    } else if (api->m_cmd == "search") {
+        qDebug()<<api->m_args<<api->m_args.length();
+        f_args = scm_from_locale_string(QUrl::toPercentEncoding(api->m_args).data());
+        SCM f_args2 = scm_from_locale_string("1");
+        f_ret = scm_call_2(f_search, f_args, f_args2);
+    }
 
     if (scm_is_string(f_ret)) {
         qDebug()<<"is string...";
@@ -99,6 +108,8 @@ FunApi::FunApi()
     setenv("GUILE_LOAD_PATH", plugin_dir, 1);
     setenv("GUILE_AUTO_COMPILE", "0", 1);
     setenv("GUILE_WARN_DEPRECATED", "detailed", 1);
+
+    QObject::connect(this, &QThread::finished, this, &FunApi::onFinished);
 }
 
 FunApi::~FunApi()
@@ -108,11 +119,40 @@ FunApi::~FunApi()
 
 void FunApi::run()
 {
-    this->m_cmd = "youget";
-    this->m_args = "XNjczMDM0MDg0";
     void *ret = scm_with_guile(guile_runner, this);
     qDebug()<<ret<<QString((const char*)ret);
+    QByteArray bret = QByteArray((const char*)ret);
+    bret.replace("'", "\""); // json need "
+    QJsonDocument jret = QJsonDocument::fromJson(bret);
+    qDebug()<<jret;    
+
+    m_ret = jret;
 }
 
+void FunApi::search(QString keywords)
+{
+    this->m_cmd = "search";
+    this->m_args = keywords;
 
+    this->start();
+}
+
+void FunApi::geturl(QString vid)
+{
+    this->m_cmd = "youget";
+    this->m_args = vid;
+
+    this->start();
+}
+
+void FunApi::onFinished()
+{
+    if (this->m_cmd == "search") {
+        emit this->searchDone(m_ret);
+    } else if (this->m_cmd == "youget") {
+        emit this->geturlDone(m_ret);
+    } else {
+        qDebug()<<"unknown cmd:"<<m_cmd;
+    }
+}
 

@@ -300,8 +300,9 @@ FORMS = inputdvddirectory.ui logwindowbase.ui filepropertiesdialog.ui \
 # INCLUDEPATH += moonweb /usr/include/python2.7
 # LIBS += -lpython2.7
 
-SOURCES += funweb/funapi.cpp
-HEADERS += funweb/funapi.h
+SOURCES += funweb/funweb.cpp funweb/funapi.cpp
+HEADERS += funweb/funweb.h funweb/funapi.h
+FORMS += funweb/funweb.ui
 INCLUDEPATH += funweb/
 INCLUDEPATH += /usr/include/guile/2.0
 LIBS += -lguile-2.0

@@ -15,8 +15,19 @@ public:
 
     virtual void run();
 
+    void search(QString keywords);
+    void geturl(QString vid);
+
     QString m_cmd;
     QString m_args;
+    QJsonDocument m_ret;
+
+public slots:
+    void onFinished();
+
+signals:
+    void searchDone(QJsonDocument);
+    void geturlDone(QJsonDocument);
 };
 
 #endif

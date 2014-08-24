@@ -21,6 +21,8 @@
 
 // #include "pyapi.h"
 #include "funapi.h"
+#include "funweb.h"
+
 
 int main( int argc, char ** argv ) 
 {
@@ -35,8 +37,12 @@ int main( int argc, char ** argv )
     //m_hehe(0);
     // return 0;
 
-    FunApi *api = new FunApi();
-    api->run();
+    // FunApi *api = new FunApi();
+    // api->run();
+    FunWeb *fw = new FunWeb;
+    fw->show();
+
+    return a.exec();
     return 0;
 
 	a.setQuitOnLastWindowClosed(false);
