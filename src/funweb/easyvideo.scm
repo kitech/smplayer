@@ -101,6 +101,34 @@
        urls)
   )
 
+; @return path of m3u file
+(define (savem3u urls name path)
+  (define m3u_file "")
+
+  (set! path (string-append (getenv "HOME") "/evdl"))
+  (set! m3u_file (format #f "~a/~a" path name))
+  
+  (let* ((port (open-output-file m3u_file))
+         (content ""))
+    (set! content "#EXTM3U\n#EXT-X-TARGETDURATION:300\n#EXT-X-VERSION:3\n")
+    
+    (map (lambda (url)
+           (set! url (string-trim-both url #\space))
+           (set! url (string-trim-both url #\'))
+           (set! content (string-append content "#EXTINF:,\n" url "\n")))
+         urls)
+    (set! content (string-append content "#EXT-X-ENDLIST\n"))
+
+    (string-map (lambda (ch)
+           (write-char ch port) ch)
+           content)
+    (close-port port))
+
+  m3u_file
+  )
+
+; (savem3u '("aaaa" "bbbb" "cccc") "hehe.m3u" ".") (quit)
+
 ; main
 (define title "")
 (cond ((equal? "dl" (caddr (program-arguments)))
@@ -119,8 +147,9 @@
          (set! tvar (geturl turl))
          (set! title (car tvar))
          (set! tvar (cadr tvar))
-
-         (system (string-append "smplayer " (string-join tvar)))
+         ; for shit smplayer playlist detection, must use .m4u
+         (set! tvar (savem3u tvar (string-append title ".m4u") "."))
+         (system (format #f "smplayer \"~a\"" tvar))
          ))
 
       (else 

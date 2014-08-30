@@ -39,11 +39,11 @@ int main( int argc, char ** argv )
 
     // FunApi *api = new FunApi();
     // api->run();
-    FunWeb *fw = new FunWeb;
-    fw->show();
+    // FunWeb *fw = new FunWeb;
+    // fw->show();
 
-    return a.exec();
-    return 0;
+    // return a.exec();
+    // return 0;
 
 	a.setQuitOnLastWindowClosed(false);
 
