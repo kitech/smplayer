@@ -15,7 +15,7 @@
   (display x)
   (newline))
 
-(define turl "http://tv.sohu.com/20140819/n403568411.shtml")
+(define turl "http://tv.sohu.com/20140819/n403568411.shtml") ; example, will override by args
 (define cmd "/home/gzleo/opensource/smplayer-mix/src/funweb/you-get/you-get -u ")
 (define tvar "")
 
@@ -149,7 +149,7 @@
          (set! tvar (cadr tvar))
          ; for shit smplayer playlist detection, must use .m4u
          (set! tvar (savem3u tvar (string-append title ".m4u") "."))
-         (system (format #f "smplayer \"~a\"" tvar))
+         (system (format #f "smplayer -add-to-playlist \"~a\"" tvar))
          ))
 
       (else 
