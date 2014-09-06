@@ -7,6 +7,7 @@
 (use-modules (ice-9 format))
 (use-modules (ice-9 popen))
 (use-modules (ice-9 rdelim))
+(use-modules (srfi srfi-1))
 
 (setlocale LC_ALL "en_US.UTF-8")
 (setlocale LC_CTYPE "en_US.UTF-8")
@@ -16,11 +17,17 @@
   (newline))
 
 (define turl "http://tv.sohu.com/20140819/n403568411.shtml") ; example, will override by args
-(define cmd "/home/gzleo/opensource/smplayer-mix/src/funweb/you-get/you-get -u ")
-(define tvar "")
+(define cmd (reduce (lambda (elem prev)
+                      (if (access? elem F_OK)
+                          (string-copy elem) (string-copy prev))) "None"
+                          '("/home/gzleo/opensource/smplayer/src/funweb/you-get/you-get"
+                            "/home/gzleo/opensource/smplayer-mix/src/funweb/you-get/you-get"
+                            "/home/gzleo/opensource/smplayer-git/src/funweb/you-get/you-get"
+                            "/usr/bin/you-get")))
+(displayf (string-append "Using you-get ... " cmd))
 
 (set! turl (car (cdr (program-arguments))))
-(displayf turl) (newline)
+(displayf (string-append "Trying ... " turl)) (newline)
 
 (displayf (string-append "cadr is:" (cadr (program-arguments))))
 ;(displayf (string-append "caddr is:" (caddr (program-arguments))))
@@ -33,7 +40,7 @@
   (define pls "")
   (define title "")
 
-  (set! cmd (string-append cmd surl))
+  (set! cmd (string-append cmd " -u " surl))
   (displayf (format #f "fetching ~a ..." surl))
 
   (let* ((port (open-input-pipe cmd))
@@ -131,6 +138,7 @@
 
 ; main
 (define title "")
+(define tvar "")
 (cond ((equal? "dl" (caddr (program-arguments)))
        (begin
          (displayf "download it")
@@ -150,6 +158,7 @@
          ; for shit smplayer playlist detection, must use .m4u
          (set! tvar (savem3u tvar (string-append title ".m4u") "."))
          (system (format #f "smplayer -add-to-playlist \"~a\"" tvar))
+         (system (format #f "smplayer -send-action play_next")) ; play_prev/pause/play
          ))
 
       (else 
